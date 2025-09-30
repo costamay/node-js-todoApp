@@ -13,6 +13,23 @@ const todoSchema =  new mongoose.Schema(
             type: String,
             trim: true,
             maxlength: [500, "Description cannot exceed 500 characters"]
+        },
+        completed: {
+            type: Boolean,
+            default: false
+        },
+        priority: {
+            type: String,
+            enum: ['low', 'medium', 'high'],
+            default: 'medium'
         }
+        
+    },
+    {
+        timestamps: true //Automatically adds createAt and updateAt
     }
 );
+
+const Todo = mongoose.model('Todo', todoSchema);
+
+module.exports =  Todo;
