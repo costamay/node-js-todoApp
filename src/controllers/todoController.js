@@ -86,13 +86,14 @@ exports.createTodo = async (req, res) => {
 //UPDATE todo
 exports.updateTodo = async (req, res) => {
     try {
-        const todo = await Todo.findByIdAndUpdate(res.params.id,
+        const todo = await Todo.findByIdAndUpdate(req.params.id,
              req.body,
              {
                 new : true, //Return updated document
                 runValidators : true //Run model validations
              }
             );
+            
 
             if(!todo){
                 return res.status(404).json({
