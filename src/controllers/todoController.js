@@ -83,3 +83,66 @@ exports.createTodo = async (req, res) => {
     }
 };
 
+//UPDATE todo
+exports.updateTodo = async (req, res) => {
+    try {
+        const todo = await Todo.findByIdAndUpdate(res.params.id,
+             req.body,
+             {
+                new : true, //Return updated document
+                runValidators : true //Run model validations
+             }
+            );
+
+            if(!todo){
+                return res.status(404).json({
+                    success : false,
+                    message : 'Todo not found'
+                });
+            }
+
+            res.status(200).json({
+                success : true,
+                message : 'Todo updated successfully',
+                data : todo
+            });
+        
+    } catch (error) {
+        res.status(500).json({
+            success : false,
+            message : 'Server Error',
+            error : error.message
+        })
+        
+    }
+};
+
+//DELETE todo
+exports.deleteTodo = async (req, res) => {
+    try {
+
+        const todo = await Todo.findByIdAndDelete(req.params.id);
+
+        if(!todo){
+            return res.status(404).json({
+                success : false,
+                message : 'Todo not found'
+            });
+        }
+
+        res.status(200).json({
+            success : true,
+            message : 'Todo deleted successfully'
+        });
+        
+    } catch (error) {
+        res.status(500).json({
+            success : false,
+            message : 'Server Error',
+            error : error.message
+        });
+        
+    }
+};
+
+
