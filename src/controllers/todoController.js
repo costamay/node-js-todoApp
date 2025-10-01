@@ -145,4 +145,31 @@ exports.deleteTodo = async (req, res) => {
     }
 };
 
+//TOGGLE todo completion status
+exports.toggleTodoComplete = async (req, res) => {
+    try {
+        const todo = await Todo.findById(req.params.id);
 
+        if(!todo){
+            return res.status(404).json({
+                success : false,
+                message : 'Todo not found'
+            });
+        }
+
+        todo.completed = !todo.completed
+        await todo.save()
+
+        res.status(200).json({
+            success : true,
+            message : 'Todo status update',
+            data : todo
+        }); 
+    } catch (error) {
+        res.status(500).json({
+            success : false,
+            message : 'Server Error',
+            error : error.message
+        });
+    }
+};
