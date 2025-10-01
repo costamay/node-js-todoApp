@@ -48,3 +48,38 @@ exports.getTodoById = async (req, res) =>{
     }
 };
 
+//CREATE new  todo
+exports.createTodo = async (req, res) => {
+    try {
+        const {title, description, priority} = req.body;
+
+        //validation
+        if(!title){
+            return res.status(400).json({
+                success : false,
+                message : 'Title is required'
+
+            })
+        }
+
+        const todo = await Todo.create({
+            title,
+            description,
+            priority
+        });
+
+        res.status(201).json({
+            success : true,
+            message : 'Todo created successfully',
+            data: todo
+        });
+        
+    } catch (error) {
+        res.status(500).json({
+            success : false,
+            message : 'Server Error',
+            error : error.message
+        })
+    }
+};
+
